@@ -51,7 +51,6 @@ func q2(array []int, replacement int) []int {
 
 func main() {
 	input := getInput()
-	//var output []string
 	a := AAtoi(strings.Split(input[1], " "))
 	for _, query := range input[2:] {
 		aquery := strings.Split(query, " ")
@@ -61,7 +60,7 @@ func main() {
 			q1(a, pos-1, rep)
 			fmt.Println(sum(a))
 		}
-		if query[0] == '2' {
+		if aquery[0] == "2" {
 			rep, _ := strconv.Atoi(string(aquery[1]))
 			q2(a, rep)
 			fmt.Println(sum(a))
