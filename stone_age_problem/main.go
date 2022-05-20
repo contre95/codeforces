@@ -88,44 +88,36 @@ func main() {
 	n := input[0][0]
 	//q := input[0][1]
 	a := input[1]
-	lq := 1
 	i := uint(0)
-	neverq2 := true
-	positions := map[uint]uint{}
+	positions := map[uint][]uint{}
+	q2once := false
 	sum := sumOnce(a)
+	//lq := ""
 	for _, query := range input[2:] {
 		if query[0] == 1 {
-			//fmt.Printf("Q%d\n", query[0])
 			pos := uint(query[1])
 			rep := uint(query[2])
-			//fmt.Println(neverq2, positions)
-			//fmt.Println(neverq2, positions)
-			positions[a[pos-1]] = rep
-			if neverq2 {
-				for o, ne := range positions {
-					sum = sum - o + ne
-				}
-			} else {
+			positions[pos-1] = []uint{a[pos-1], rep}
+			//fmt.Println(positions, q2once)
+			if q2once {
 				sum = i * n
-				//fmt.Println(positions, sum)
-				for _, ne := range positions {
-					sum = sum + (ne - i)
+				for _, dup := range positions {
+					sum = sum + (dup[1] - i)
 				}
-				if lq == 2 {
-					delete(positions, a[pos-1])
-					positions[i] = rep
+			} else if !q2once {
+				for _, dup := range positions {
+					sum = sum - dup[0] + dup[1]
 				}
 			}
-			lq = 1
 		}
+		//lq = "q1"
 		if query[0] == 2 {
-			lq = 2
-			//fmt.Printf("Q%d\n", query[0])
+			//lq = "q2"
+			q2once = true
 			rep := query[1]
 			sum = n * rep
 			i = rep
-			positions = map[uint]uint{}
-			neverq2 = false
+			positions = map[uint][]uint{}
 		}
 		fmt.Println(sum)
 	}
