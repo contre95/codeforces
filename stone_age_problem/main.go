@@ -89,35 +89,30 @@ func main() {
 	//q := input[0][1]
 	a := input[1]
 	i := uint(0)
-	positions := map[uint][]uint{}
-	q2once := false
+	positions := map[uint]uint{}
 	sum := sumOnce(a)
-	//lq := ""
 	for _, query := range input[2:] {
 		if query[0] == 1 {
 			pos := uint(query[1])
 			rep := uint(query[2])
-			positions[pos-1] = []uint{a[pos-1], rep}
-			//fmt.Println(positions, q2once)
-			if q2once {
-				sum = i * n
-				for _, dup := range positions {
-					sum = sum + (dup[1] - i)
-				}
-			} else if !q2once {
-				for _, dup := range positions {
-					sum = sum - dup[0] + dup[1]
-				}
+			//fmt.Println(positions)
+			if _, ok := positions[pos-1]; ok {
+				sum = sum + (rep - positions[pos-1])
+			} else if i != 0 {
+				sum = sum + rep - i
+			} else {
+				sum = sum + rep - a[pos-1]
 			}
+			positions[pos-1] = rep
+			//positions[pos-1] =
 		}
 		//lq = "q1"
 		if query[0] == 2 {
 			//lq = "q2"
-			q2once = true
 			rep := query[1]
-			sum = n * rep
 			i = rep
-			positions = map[uint][]uint{}
+			positions = map[uint]uint{}
+			sum = n * i
 		}
 		fmt.Println(sum)
 	}
