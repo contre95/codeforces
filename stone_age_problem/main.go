@@ -72,42 +72,60 @@ func sumPos(a []uint, positions []uint) uint {
 	return result
 }
 
+func sumNotPos(a []uint, positions []uint) uint {
+	result := uint(0)
+	for p := range a {
+		if !contains(positions, uint(p)) {
+			result += a[p]
+		}
+	}
+	return result
+}
+
 func main() {
 	in := bufio.NewReader(os.Stdin)
 	input := getInput(in)
 	n := input[0][0]
 	//q := input[0][1]
 	a := input[1]
-	lq := ""
+	lq := 1
 	i := uint(0)
-	var positions []uint
+	neverq2 := true
+	positions := map[uint]uint{}
 	sum := sumOnce(a)
 	for _, query := range input[2:] {
 		if query[0] == 1 {
+			//fmt.Printf("Q%d\n", query[0])
 			pos := uint(query[1])
 			rep := uint(query[2])
-			//Actualizo el array y guardo donde actualicé
-			q1(a, pos-1, rep)
-			if !contains(positions, pos-1) {
-				positions = append(positions, pos-1)
-			}
-			// Analizo casos previos
-			if lq == "q2" {
-				sum = sum - i + rep
-			} else if lq == "q1" {
-				sum = i*(uint(n)-uint(len(positions))) + sumPos(a, positions)
+			//fmt.Println(neverq2, positions)
+			//fmt.Println(neverq2, positions)
+			positions[a[pos-1]] = rep
+			if neverq2 {
+				for o, ne := range positions {
+					sum = sum - o + ne
+				}
 			} else {
-				// Caso inicial
-				sum = sumOnce(a)
+				sum = i * n
+				//fmt.Println(positions, sum)
+				for _, ne := range positions {
+					sum = sum + (ne - i)
+				}
+				if lq == 2 {
+					delete(positions, a[pos-1])
+					positions[i] = rep
+				}
 			}
-			lq = "q1"
+			lq = 1
 		}
 		if query[0] == 2 {
+			lq = 2
+			//fmt.Printf("Q%d\n", query[0])
 			rep := query[1]
 			sum = n * rep
 			i = rep
-			lq = "q2"
-			positions = []uint{}
+			positions = map[uint]uint{}
+			neverq2 = false
 		}
 		fmt.Println(sum)
 	}
