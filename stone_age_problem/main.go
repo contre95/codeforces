@@ -47,7 +47,6 @@ func main() {
 	in := bufio.NewReader(os.Stdin)
 	input := getInput(in)
 	n := input[0][0]
-	//q := input[0][1]
 	a := input[1]
 	i := uint64(0)
 	positions := map[uint64]uint64{}
@@ -56,7 +55,6 @@ func main() {
 		if query[0] == 1 {
 			pos := uint64(query[1])
 			rep := uint64(query[2])
-			//fmt.Println(positions)
 			if _, ok := positions[pos-1]; ok {
 				sum = sum + (rep - positions[pos-1])
 			} else if i != 0 {
@@ -65,11 +63,8 @@ func main() {
 				sum = sum + rep - a[pos-1]
 			}
 			positions[pos-1] = rep
-			//positions[pos-1] =
 		}
-		//lq = "q1"
 		if query[0] == 2 {
-			//lq = "q2"
 			rep := query[1]
 			i = rep
 			positions = map[uint64]uint64{}
