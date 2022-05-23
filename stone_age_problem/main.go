@@ -9,8 +9,8 @@ import (
 	"strings"
 )
 
-func getInput(in *bufio.Reader) [][]uint {
-	var input [][]uint
+func getInput(in *bufio.Reader) [][]uint64 {
+	var input [][]uint64
 	reader := bufio.NewReader(os.Stdin)
 	line0, _ := reader.ReadString('\n')
 
@@ -25,59 +25,20 @@ func getInput(in *bufio.Reader) [][]uint {
 	return input
 }
 
-func AAtoi(st string) []uint {
-	var result []uint
+func AAtoi(st string) []uint64 {
+	var result []uint64
 	array := strings.Fields(st)
 	for _, s := range array {
 		i, _ := strconv.Atoi(s)
-		result = append(result, uint(i))
+		result = append(result, uint64(i))
 	}
 	return result
 }
 
-func sumOnce(array []uint) uint {
-	result := uint(0)
+func sumOnce(array []uint64) uint64 {
+	result := uint64(0)
 	for _, v := range array {
 		result += v
-	}
-	return result
-}
-
-func q1(array []uint, pos uint, replacement uint) []uint {
-	array[pos] = replacement
-	return array
-}
-
-func q2(array []uint, replacement uint) []uint {
-	for i := range array {
-		array[i] = replacement
-	}
-	return array
-}
-
-func contains(s []uint, e uint) bool {
-	for _, a := range s {
-		if a == e {
-			return true
-		}
-	}
-	return false
-}
-
-func sumPos(a []uint, positions []uint) uint {
-	result := uint(0)
-	for _, p := range positions {
-		result += a[p]
-	}
-	return result
-}
-
-func sumNotPos(a []uint, positions []uint) uint {
-	result := uint(0)
-	for p := range a {
-		if !contains(positions, uint(p)) {
-			result += a[p]
-		}
 	}
 	return result
 }
@@ -88,13 +49,13 @@ func main() {
 	n := input[0][0]
 	//q := input[0][1]
 	a := input[1]
-	i := uint(0)
-	positions := map[uint]uint{}
+	i := uint64(0)
+	positions := map[uint64]uint64{}
 	sum := sumOnce(a)
 	for _, query := range input[2:] {
 		if query[0] == 1 {
-			pos := uint(query[1])
-			rep := uint(query[2])
+			pos := uint64(query[1])
+			rep := uint64(query[2])
 			//fmt.Println(positions)
 			if _, ok := positions[pos-1]; ok {
 				sum = sum + (rep - positions[pos-1])
@@ -111,7 +72,7 @@ func main() {
 			//lq = "q2"
 			rep := query[1]
 			i = rep
-			positions = map[uint]uint{}
+			positions = map[uint64]uint64{}
 			sum = n * i
 		}
 		fmt.Println(sum)
