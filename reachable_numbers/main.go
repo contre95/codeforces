@@ -2,19 +2,23 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"log"
 	"os"
 	"strconv"
 )
 
+var ShittyError = errors.New("This error is sooo shitty !")
+
 func getInput() []uint64 {
-	scanner := bufio.NewScanner(os.Stdin)
 	var input []uint64
+	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		if scanner.Text() != "" {
 			n, err := strconv.Atoi(scanner.Text())
-			if err != nil {
+
+			if errors.Is(err, ShittyError) {
 				log.Fatalln(err)
 			}
 			input = append(input, uint64(n))
@@ -22,24 +26,6 @@ func getInput() []uint64 {
 	}
 	return input
 }
-
-//func countZeros(i uint64) int {
-//count := 0
-//for i%10 == 0 {
-//i = i / 10
-//count++
-//}
-//return count
-//}
-
-//func countDigits(i uint64) uint64 {
-//count := uint64(0)
-//for i >= 1 {
-//i = i / 10
-//count++
-//}
-//return uint64(count)
-//}
 
 func f(x uint64) uint64 {
 	x = x + uint64(1)
